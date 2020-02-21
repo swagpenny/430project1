@@ -58,6 +58,7 @@
     };
     //function to send our post request
     const sendPost = (e, nameForm) => {
+        
       //grab the forms action (url to go to)
       //and method (HTTP method - POST in this case)
       const nameAction = nameForm.getAttribute('action');
@@ -66,6 +67,8 @@
       //grab the form's name and age fields so we can check user input
       const nameField = nameForm.querySelector('#nameField');
       const ageField = nameForm.querySelector('#ageField');
+      const categoryField = nameForm.querySelector('#category');
+      const ingredientsField = nameForm.querySelector('#ingredientsField');
       
       //create a new Ajax request (remember this is asynchronous)
       const xhr = new XMLHttpRequest();
@@ -91,7 +94,7 @@
       //So ours might look like  name=test&age=22
       //Again the 'name' fields in the form are the variable names in the string
       //and the variable names the server will look for.
-      const formData = `name=${nameField.value}&age=${ageField.value}`;
+      const formData = `name=${nameField.value}&ingredients=${ingredientsField.value}&age=${ageField.value}&category=${categoryField.value}`;
       
       //send our request with the data
       xhr.send(formData);
@@ -107,7 +110,6 @@
       const url = userForm.querySelector('#urlField').value;
       //grab method selected
       const method = userForm.querySelector('#methodSelect').value;
-      
       //create a new AJAX request (asynchronous)
       const xhr = new XMLHttpRequest();
       //setup connect using the selected method and url
@@ -133,7 +135,6 @@
       // POST form
       //grab form
       const nameForm = document.querySelector('#nameForm');
-      
       //create handler
       const addUser = (e) => sendPost(e, nameForm);
       
@@ -159,10 +160,34 @@
     <form id="nameForm" action="/addUser" method="post">
       <label for="name">Name: </label>
       <input id="nameField" type="text" name="name" />
-      <label for="age">Age: </label>
-      <input id="ageField" type="number" name="age" min="0" max="100" step="1"/>
+        <label for="ingredients">Ingredients: </label>
+        <input id="ingredientsField" type="text" name="ingredients" />
+        
+        <label for="reset"></label>
+         <input type="reset">
+        
+        <br><label for="foodcategory">Category</label>
+        <br><input type="radio" id="breakfast" name="category" value="Breakfast">
+        <label for="breakfast">Breakfast</label><br>
+        <input type="radio" id="lunch" name="category" value="Lunch">
+        <label for="lunch">Lunch</label><br>
+        <input type="radio" id="dinner" name="category" value="Dinner">
+        <label for="dinner">Dinner</label><br>
+        <input type="radio" id="snack" name="category" value="Snack">
+        <label for="snack">Snack</label><br>
+        <input type="radio" id="other" name="category" value="Other">
+        <label for="other">Other</label><br>
+          
+      <label for="time">Prep Time: </label>
+      <input id="time" type="number" name="age" min="0" max="1000" step="1"/>
+    
+      <label for="reset"></label>
+         <input type="reset">
+        
       <input type="submit" value="Add User" />
     </form>
+      
+      
     <form id="userForm" action="/getUsers" method="get">
       <select id='urlField'>
         <option value='/getUsers'>/getUsers</option>

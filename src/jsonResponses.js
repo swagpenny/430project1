@@ -16,7 +16,7 @@ const addUser = (req, res, query) => {
   };
 
 
-  if (!query.name || !query.age) {
+  if (!query.name || !query.age || !query.ingredients) {
     responseJSON.id = 'missingParams';
     return respond(req, res, 400, responseJSON);
   }
@@ -27,6 +27,8 @@ const addUser = (req, res, query) => {
   users[query.name] = {
     name: query.name,
     age: query.age,
+    ingredients: query.ingredients,
+    category: query.category,
   };
 
   if (responseCode === 201) {
