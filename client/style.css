@@ -12,15 +12,15 @@ html, body {
 }
 
 #top h1 {
+  font-size: 150%;
   
-  font-family: 'Carter One';
 }
+
 #content {
   margin-top: 100px;
   font-size: 2em;
   text-align: center;
 }
-
 select {
     font-family: 'Carter One';
 }
@@ -66,37 +66,6 @@ th {
   background-color: grey;
   color: white;
 }
-   button {
-        background-color: white;
-        cursor: pointer;
-        color: black;
-        border: 2px solid #555555;
-   }
-   @media print {
-        button {
-          visibility: hidden !important;
-        }
-        #top {
-            visibility: hidden; // part to hide at the time of print
-            display: none;
-            -webkit-print-color-adjust: exact !important; // not necessary use         
-               if colors not visible
-        }
-
-        #printBtn {
-            visibility: hidden !important; // To hide 
-        }
-
-        #page-wrapper * {
-            visibility: visible; // Print only required part
-            text-align: left;
-            -webkit-print-color-adjust: exact !important;
-        }
-    }
-    .legend  {
-  background: #9DD2E2 !important;
-}
-
 #userForm{
     margin-top: 0.25%;
 }
