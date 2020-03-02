@@ -11,9 +11,9 @@ html, body {
   margin: 0 auto;
 }
 
-#top h1 {
+h1 {
   font-size: 150%;
-  
+  font-family: 'Concert One' ;
 }
 
 #content {
