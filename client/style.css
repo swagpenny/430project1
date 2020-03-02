@@ -3,6 +3,7 @@ html, body {
   width: 100%;
   margin: 0;
   padding: 0;
+  background-color: lightgray;
 }
 
 #top {
@@ -11,11 +12,91 @@ html, body {
 }
 
 #top h1 {
-  font-size: 2em;
+  
+  font-family: 'Carter One';
 }
-
 #content {
   margin-top: 100px;
   font-size: 2em;
   text-align: center;
+}
+
+select {
+    font-family: 'Carter One';
+}
+input {
+    font-family: 'PT Serif' ;
+}
+label {
+    font-family: 'Concert One' ;
+    font-size: 150%;
+}
+input[type=text] {
+    -webkit-transition: width 0.5s ease-in-out;
+    transition: width 0.5s ease-in-out;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+input[type=text]#ingredientsField:focus {
+    width: 80%;
+}
+.button{
+  background-color: white;
+  cursor: pointer;
+  color: black;
+  border: 2px solid #555555;
+}
+table {
+    width: 80%;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 4%;
+   }
+th, td {
+  text-align: left;
+  padding: 8px;
+    font-family: 'Concert One';
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+  background-color: grey;
+  color: white;
+}
+   button {
+        background-color: white;
+        cursor: pointer;
+        color: black;
+        border: 2px solid #555555;
+   }
+   @media print {
+        button {
+          visibility: hidden !important;
+        }
+        #top {
+            visibility: hidden; // part to hide at the time of print
+            display: none;
+            -webkit-print-color-adjust: exact !important; // not necessary use         
+               if colors not visible
+        }
+
+        #printBtn {
+            visibility: hidden !important; // To hide 
+        }
+
+        #page-wrapper * {
+            visibility: visible; // Print only required part
+            text-align: left;
+            -webkit-print-color-adjust: exact !important;
+        }
+    }
+    .legend  {
+  background: #9DD2E2 !important;
+}
+
+#userForm{
+    margin-top: 0.25%;
 }

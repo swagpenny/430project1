@@ -12,11 +12,11 @@ const getUsers = (req, res) => {
 
 const addUser = (req, res, query) => {
   const responseJSON = {
-    message: 'Name and age are both required.',
+    message: 'Name and time are both required.',
   };
 
 
-  if (!query.name || !query.age || !query.ingredients) {
+  if (!query.name || !query.time || !query.ingredients) {
     responseJSON.id = 'missingParams';
     return respond(req, res, 400, responseJSON);
   }
@@ -26,7 +26,7 @@ const addUser = (req, res, query) => {
 
   users[query.name] = {
     name: query.name,
-    age: query.age,
+    time: query.time,
     ingredients: query.ingredients,
     category: query.category,
   };

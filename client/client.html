@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Our simple HTTP server</title>
+  <title>Recipe API</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
-  
+  <link href="https://fonts.googleapis.com/css?family=Concert+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Carter+One|Concert+One&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=PT+Serif&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans|Oswald|Roboto+Condensed&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.34/browser.min.js"></script>
   <script type="text/babel">
         
@@ -22,8 +26,15 @@
       //if users in response, add to screen
       if(obj.users) {
         const userList = document.createElement('p');
-        const users = JSON.stringify(obj.users);
-        userList.textContent = users;
+        const users = obj.users;
+        var table = '<table border="1|0"><tr><th>Name</th><th>Time</th><th>Ingredients</th><th>Category</th></tr>';
+        Object.entries(users).forEach(function(ele, key, obj) {
+
+          table = table+'<tr><td>'+ele[1].name+'</td><td>'+ele[1].time+'</td><td>'+ele[1].ingredients+'</td><td>'+ele[1].category+'</td></tr>';
+
+        });
+        table = table + '</table>';
+        userList.innerHTML = table;
         content.appendChild(userList);
       }
     };
@@ -34,7 +45,7 @@
       //check the status code
       switch(xhr.status) {
         case 200: //success
-          content.innerHTML = `<b>Success</b>`;
+          content.innerHTML = `<button onclick="createPDF()" href="#">Print</button>`;
           break;
         case 201: //created
           content.innerHTML = '<b>Create</b>';
@@ -64,9 +75,9 @@
       const nameAction = nameForm.getAttribute('action');
       const nameMethod = nameForm.getAttribute('method');
       
-      //grab the form's name and age fields so we can check user input
+      //grab the form's name and time fields so we can check user input
       const nameField = nameForm.querySelector('#nameField');
-      const ageField = nameForm.querySelector('#ageField');
+      const timeField = nameForm.querySelector('#timeField');
       const categoryField = nameForm.querySelector('#category');
       const ingredientsField = nameForm.querySelector('#ingredientsField');
       
@@ -85,16 +96,7 @@
       //set our function to handle the response
       xhr.onload = () => handleResponse(xhr, true);
       
-      //build our x-www-form-urlencoded format. Without ajax the 
-      //browser would do this automatically but it forcefully changes pages
-      //which we don't want.
-      //The format is the same as query strings, so key=value&key2=value2
-      //The 'name' fields from the inputs are the variable names sent to
-      //the server. 
-      //So ours might look like  name=test&age=22
-      //Again the 'name' fields in the form are the variable names in the string
-      //and the variable names the server will look for.
-      const formData = `name=${nameField.value}&ingredients=${ingredientsField.value}&age=${ageField.value}&category=${categoryField.value}`;
+      const formData = `name=${nameField.value}&ingredients=${ingredientsField.value}&time=${timeField.value}&category=${categoryField.value}`;
       
       //send our request with the data
       xhr.send(formData);
@@ -114,11 +116,6 @@
       const xhr = new XMLHttpRequest();
       //setup connect using the selected method and url
       xhr.open(method, url);
-      //set accept header in request to application/json
-      //The accept header is a comma separated list of
-      //accepted response types in order of preference
-      //from first to last. You only need to send one
-      //but you can send many, separated by commas.
       xhr.setRequestHeader('Accept', 'application/json');
       //if get request or head request
       xhr.onload = () => handleResponse(xhr, method === 'get');
@@ -131,6 +128,8 @@
       //return false to prevent page redirection from a form
       return false;
     };
+
+    
     const init = () => {
       // POST form
       //grab form
@@ -152,52 +151,86 @@
       userForm.addEventListener('submit', getUsers);
     };
     window.onload = init;
+
+   
+  </script>
+  <script>
+      //source: https://www.encodedna.com/javascript/convert-html-table-to-pdf-using-javascript-without-a-plugin.htm
+      function createPDF() {
+        var sTable = document.getElementById('content').innerHTML;
+
+        var style = "<style>";
+        style = style + "table {width: 100%;font: 17px Calibri;}";
+        style = style + "table, th, td {border: solid 1px #DDD; border-collapse: collapse;";
+        style = style + "padding: 2px 3px;text-align: center;}";
+        style = style + "</style>";
+
+        // CREATE A WINDOW OBJECT.
+        var win = window.open('', '', 'height=700,width=700');
+
+        win.document.write('<html><head><style>button { visibility: hidden; } @media print { button {visibility: hidden !important;  }}</style>');
+        win.document.write('<title>Profile</title>');   // <title> FOR PDF HEADER.
+        win.document.write(style);          // ADD STYLE INSIDE THE HEAD TAG.
+        win.document.write('</head>');
+        win.document.write('<body>');
+        win.document.write(sTable);         // THE TABLE CONTENTS INSIDE THE BODY TAG.
+        win.document.write('</body></html>');
+
+        win.document.close();   
+
+        win.print();    
+    }
   </script>
 </head>
 <body>
   <section id="top">
-    <h3>POST Status Code Tests</h3>
-    <form id="nameForm" action="/addUser" method="post">
+      
+    <h1>Create Your Own Recipe</h1>
+      <!-- recipe name -->
+    <form id="nameForm" action="/addUser" method="post" class="w3-container w3-card-4 w3-light-grey" >
       <label for="name">Name: </label>
-      <input id="nameField" type="text" name="name" />
-        <label for="ingredients">Ingredients: </label>
-        <input id="ingredientsField" type="text" name="ingredients" />
+      <input id="nameField" type="text" name="name" class="w3-input w3-border"/>
         
-        <label for="reset"></label>
-         <input type="reset">
+         <!-- ingredients -->
+        <br><label for="ingredients">Ingredients: </label>
+        <input id="ingredientsField" type="text" name="ingredients" class="w3-input w3-border"/>
         
+         <!-- food category -->
         <br><label for="foodcategory">Category</label>
-        <br><input type="radio" id="breakfast" name="category" value="Breakfast">
+        <br><input type="radio" id="breakfast" name="category" value="Breakfast" class="w3-radio">
         <label for="breakfast">Breakfast</label><br>
-        <input type="radio" id="lunch" name="category" value="Lunch">
+        <input type="radio" id="lunch" name="category" value="Lunch" class="w3-radio">
         <label for="lunch">Lunch</label><br>
-        <input type="radio" id="dinner" name="category" value="Dinner">
+        <input type="radio" id="dinner" name="category" value="Dinner" class="w3-radio">
         <label for="dinner">Dinner</label><br>
-        <input type="radio" id="snack" name="category" value="Snack">
+        <input type="radio" id="snack" name="category" value="Snack" class="w3-radio">
         <label for="snack">Snack</label><br>
-        <input type="radio" id="other" name="category" value="Other">
+        <input type="radio" id="other" name="category" value="Other" class="w3-radio">
         <label for="other">Other</label><br>
           
-      <label for="time">Prep Time: </label>
-      <input id="time" type="number" name="age" min="0" max="1000" step="1"/>
+         <!-- Prep Time -->
+      <br><label for="time">Prep Time: </label>
+      <input id="time" type="number" name="time" min="0" max="1000" step="1"/>
     
+         <!-- Rest Button -->
       <label for="reset"></label>
-         <input type="reset">
+         <input type="reset" class="button">
         
-      <input type="submit" value="Add User" />
+         <!-- Submit -->
+      <input type="submit" value="Add" class="button"/><br>
     </form>
       
-      
-    <form id="userForm" action="/getUsers" method="get">
+      <!-- get form -->
+    <form id="userForm" action="/getUsers" method="get" class="w3-container w3-card-4 w3-light-grey">
       <select id='urlField'>
-        <option value='/getUsers'>/getUsers</option>
+        <br><option value='/getUsers' >/getrecipes</option>
         <option value='/notReal'>/notReal</option>
       </select>
       <select id="methodSelect">
         <option value="get">GET</option>
         <option value="head">HEAD</option>
       </select>
-      <input type="submit" value="Get User" />
+      <input type="submit" value="Get Recipes" class="button"/>
     </form>
   </section>
   <section id="content">

@@ -56,6 +56,7 @@ const onRequest = (req, res) => {
     handlePost(req, res, parsedUrl);
   } else if (urlStruct[req.method][parsedUrl.pathname]) {
     urlStruct[req.method][parsedUrl.pathname](req, res);
+    urlStruct[req.method][parsedUrl.pathname](req, res);
   } else {
     urlStruct[req.method].notReal(req, res);
   }
